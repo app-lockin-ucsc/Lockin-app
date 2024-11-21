@@ -16,6 +16,7 @@ export function ExternalLink({ href, ...rest }: Props) {
           // Prevent the default behavior of linking to the default browser on native.
           event.preventDefault();
           // Open the link in an in-app browser.
+          //final push test comment
           await openBrowserAsync(href);
         }
       }}

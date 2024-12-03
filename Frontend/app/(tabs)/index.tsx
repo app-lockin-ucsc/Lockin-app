@@ -14,7 +14,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1, // Take up the full screen height
-    backgroundColor: "#fff",
+    backgroundColor: "black",
   },
   container: {
     flex: 1,
@@ -24,6 +24,6 @@ const styles = StyleSheet.create({
 
   textStyle: {
     fontSize: 25,
-    color: "red",
+    color: "white",
   },
 });

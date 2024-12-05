@@ -16,16 +16,20 @@ const CircularProgress = ({ progress }: { progress: number }) => {
   const circumference = 2 * Math.PI * radius; // Circumference of the circle
 
   // Shared value for animation
-  const animatedProgress = useSharedValue(0);
+  const animatedProgress = useSharedValue(circumference);
 
   // Animate the progress when the `progress` prop changes
   useEffect(() => {
-    animatedProgress.value = withTiming(progress, { duration: 1000 });
+    // Trigger animation every time the progress changes
+    // (The strokeDashoffset decreases as progress increases)
+    animatedProgress.value = withTiming(circumference * (1 - progress), {
+      duration: 1000, // Smooth transition for progress change
+    });
   }, [progress]);
 
   // Animated props for the Circle component
   const animatedProps = useAnimatedProps(() => ({
-    strokeDashoffset: circumference * (1 - animatedProgress.value),
+    strokeDashoffset: animatedProgress.value,
   }));
 
   return (
@@ -49,8 +53,8 @@ const CircularProgress = ({ progress }: { progress: number }) => {
           strokeWidth={strokeWidth}
           fill="none"
           strokeLinecap="round"
-          strokeDasharray={circumference}
-          animatedProps={animatedProps}
+          strokeDasharray={circumference} // Total length of the circle's path
+          animatedProps={animatedProps}   // Apply animated props for progress animation
         />
       </Svg>
     </View>

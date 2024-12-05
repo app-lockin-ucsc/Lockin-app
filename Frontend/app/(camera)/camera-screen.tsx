@@ -5,17 +5,25 @@ import { useState } from "react";
 import { useRouter } from "expo-router";
 
 export default function Index() {
-  const router = useRouter();
   const [showCamera, setShowCamera] = useState(false);
+  const router = useRouter();
+
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
-        <Text style={styles.textStyle}>Welcome Screen.</Text>
-
+        <Text style={styles.textStyle}>ca Screen.</Text>
         <Button
-          title="Open Camera"
-          onPress={() => router.push("/camera-screen")} // Navigate to the camera route
+          title="Go Back"
+          onPress={() => router.back()} // Navigate back to the tabs
         />
+
+        {/* SOMEWHERE IN HERE I NEED TO CHANGE
+         SO WHEN IM ON THE CAMERA PAGE I JUST INSTANTLY OPEN THE CAMERA! */}
+        {showCamera ? (
+          <Camera />
+        ) : (
+          <Button title="Open Camera" onPress={() => setShowCamera(true)} />
+        )}
       </View>
     </SafeAreaView>
   );

@@ -107,8 +107,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: 400,
-    height: 400,
+    aspectRatio: 1, // Maintains square aspect ratio
+    maxWidth: "100%", // Limits max size
+    maxHeight: "100%", // Limits max size
   },
 
   flipCameraContainer: {
@@ -129,8 +130,8 @@ const styles = StyleSheet.create({
 
   closeCameraContainer: {
     position: "absolute",
-    top: -20,
-    left: -10,
+    top: "-2%",
+    left: "-2%",
   },
 
   cameraClose: {
@@ -138,13 +139,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 100,
     width: 90,
-    borderRadius: 50,
+    borderRadius: 40,
   },
 
   captureCameraContainer: {
     position: "absolute",
-    bottom: 10,
-    left: 150,
+
+    bottom: "1%",
   },
 
   textStyle: {

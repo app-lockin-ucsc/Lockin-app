@@ -12,6 +12,11 @@
       "supportsTablet": true
     },
     "android": {
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -31,6 +36,15 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+        
+      ], 
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(Lockin) to access your camera",
+          "microphonePermission": "Allow $(Lockin) to access your microphone",
+          "recordAudioAndroid": true
         }
       ]
     ],

@@ -1,30 +1,19 @@
 import { Text, View, StyleSheet, Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Camera from "@/components/Camera";
+import CameraComponent from "@/components/CameraComponent";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 
 export default function Index() {
-  const [showCamera, setShowCamera] = useState(false);
   const router = useRouter();
 
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
-      <View style={styles.container}>
-        <Text style={styles.textStyle}>ca Screen.</Text>
-        <Button
-          title="Go Back"
-          onPress={() => router.back()} // Navigate back to the tabs
-        />
-
-        {/* SOMEWHERE IN HERE I NEED TO CHANGE
+    <SafeAreaView style={styles.container}>
+      {/* <View style={styles.container}> */}
+      {/* SOMEWHERE IN HERE I NEED TO CHANGE
          SO WHEN IM ON THE CAMERA PAGE I JUST INSTANTLY OPEN THE CAMERA! */}
-        {showCamera ? (
-          <Camera />
-        ) : (
-          <Button title="Open Camera" onPress={() => setShowCamera(true)} />
-        )}
-      </View>
+      <CameraComponent />
+      {/* </View> */}
     </SafeAreaView>
   );
 }
@@ -36,6 +25,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: "black",
     justifyContent: "flex-start",
     alignItems: "center",
   },

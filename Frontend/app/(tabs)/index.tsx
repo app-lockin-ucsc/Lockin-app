@@ -9,7 +9,7 @@ export default function Index() {
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
         <Text style={styles.textStyle}>Welcome Screen.</Text>
-        <CountdownTimer /> 
+        <CircularProgress /> 
       </View>
     </SafeAreaView>
   );

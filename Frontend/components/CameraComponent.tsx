@@ -26,6 +26,11 @@ export default function CameraComponent() {
 
   const handleCameraClosePress = () => router.push("/(tabs)");
 
+  const handleCameraCapturePress = async () => {
+    await capturePhoto();
+    router.push("/(tabs)");
+  };
+
   const toggleCameraFacing = () =>
     setFacing((current) => (current === "back" ? "front" : "back"));
 
@@ -76,7 +81,7 @@ export default function CameraComponent() {
           containerStyle={styles.flipButtonContainer}
         />
         <ActionButton
-          onPress={capturePhoto}
+          onPress={handleCameraCapturePress}
           containerStyle={styles.captureButtonContainer}
         />
       </View>

@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import { useRouter } from "expo-router";
@@ -7,6 +14,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
 import { Dimensions } from "react-native";
 import ActionButton from "./ActionButton";
+import PhotoPreviewSection from "./PhotoPreviewSection";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -16,6 +24,8 @@ export default function CameraComponent() {
   const [mediaPermission, requestMediaPermission] =
     MediaLibrary.usePermissions();
   const cameraRef = useRef<CameraView | null>(null);
+  const [photo, setPhoto] = useState<any>(null);
+  const [lastTap, setLastTap] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -26,9 +36,8 @@ export default function CameraComponent() {
 
   const handleCameraClosePress = () => router.push("/(tabs)");
 
-  const handleCameraCapturePress = async () => {
-    await capturePhoto();
-    router.push("/(tabs)");
+  const handleCameraCapturePress = () => {
+    capturePhoto();
   };
 
   const toggleCameraFacing = () =>
@@ -38,11 +47,22 @@ export default function CameraComponent() {
     if (cameraRef.current) {
       const options = { quality: 1, base64: true, exif: false };
       const photo = await cameraRef.current.takePictureAsync(options);
-      if (photo?.uri) {
-        await MediaLibrary.saveToLibraryAsync(photo.uri);
-        alert("Photo saved to your gallery!");
-      }
+      setPhoto(photo);
     }
+  };
+
+  const handleRetakePhoto = () => {
+    setPhoto(null);
+  };
+
+  const handleDoubleTap = () => {
+    const now = Date.now();
+    const DOUBLE_TAP_DELAY = 300; // time in ms
+
+    if (now - lastTap < DOUBLE_TAP_DELAY) {
+      setFacing((prevFacing) => (prevFacing === "back" ? "front" : "back"));
+    }
+    setLastTap(now);
   };
 
   if (!permission) return <View />;
@@ -54,6 +74,15 @@ export default function CameraComponent() {
       </View>
     );
   }
+
+  if (photo)
+    return (
+      <PhotoPreviewSection
+        photo={photo}
+        handleRetakePhoto={handleRetakePhoto}
+        facing={facing}
+      />
+    );
 
   return (
     <View style={styles.container}>
@@ -68,11 +97,13 @@ export default function CameraComponent() {
           <Entypo name="cross" size={45} color="white" />
         </TouchableOpacity>
       </View>
-      <CameraView
-        ref={cameraRef}
-        style={styles.cameraContainer}
-        facing={facing}
-      ></CameraView>
+      <TouchableWithoutFeedback onPress={handleDoubleTap}>
+        <CameraView
+          ref={cameraRef}
+          style={styles.cameraContainer}
+          facing={facing}
+        ></CameraView>
+      </TouchableWithoutFeedback>
 
       <View style={styles.botCameraControl}>
         <ActionButton

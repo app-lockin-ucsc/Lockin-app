@@ -43,8 +43,7 @@
     "react-native-svg": "15.8.0",
     "react-native-web": "^0.19.13",
     "react-native-webview": "13.12.4",
-    "expo-media-library": "~17.0.3",
-    "undefined": "expo-google-fonts/luckiest-guy"
+    "expo-media-library": "~17.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",

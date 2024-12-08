@@ -1,10 +1,14 @@
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import { useRouter } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
+import { Dimensions } from "react-native";
+import ActionButton from "./ActionButton";
+
+const { width: screenWidth } = Dimensions.get("window");
 
 export default function CameraComponent() {
   const [facing, setFacing] = useState<CameraType>("back");
@@ -14,46 +18,32 @@ export default function CameraComponent() {
   const cameraRef = useRef<CameraView | null>(null);
   const router = useRouter();
 
-  //Asking for permission on first render only. Basically asks once
   useEffect(() => {
     if (!mediaPermission?.granted) {
       requestMediaPermission();
     }
   }, [mediaPermission]);
 
-  //when closing camera, go back to homepage.
-  const handleCameraClosePress = () => {
-    router.push("/(tabs)");
-  };
+  const handleCameraClosePress = () => router.push("/(tabs)");
 
-  //handle which way the camera is facing.
-  const toggleCameraFacing = () => {
+  const toggleCameraFacing = () =>
     setFacing((current) => (current === "back" ? "front" : "back"));
-  };
 
   const capturePhoto = async () => {
     if (cameraRef.current) {
-      const options = {
-        quality: 1,
-        base64: true,
-        exif: false,
-      };
-      const photo = await cameraRef.current.takePictureAsync(options); // Call the method on the camera instance
+      const options = { quality: 1, base64: true, exif: false };
+      const photo = await cameraRef.current.takePictureAsync(options);
       if (photo?.uri) {
-        await MediaLibrary.saveToLibraryAsync(photo.uri); // Save the photo to the library
+        await MediaLibrary.saveToLibraryAsync(photo.uri);
         alert("Photo saved to your gallery!");
       }
     }
   };
 
-  //if the user does not give perms to use camera show nothing.
-  if (!permission) {
-    return <View />;
-  }
-  //if the user says no to perms. prompt with error.
+  if (!permission) return <View />;
   if (!permission.granted) {
     return (
-      <View>
+      <View style={styles.permissionContainer}>
         <Text>We need your permission to show the camera.</Text>
         <Button onPress={requestPermission} title="Grant Permission" />
       </View>
@@ -62,36 +52,34 @@ export default function CameraComponent() {
 
   return (
     <View style={styles.container}>
-      {
-        //state when camera IS open!
-        <CameraView
-          ref={cameraRef}
-          style={styles.cameraContainer}
-          facing={facing}
+      <View style={styles.topCameraBar}>
+        <View style={styles.textStyleContainer}>
+          <Text style={styles.textStyle}>Lockin</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.cameraClose}
+          onPress={handleCameraClosePress}
         >
-          <View style={styles.flipCameraContainer}>
-            <TouchableOpacity
-              style={styles.flipButton}
-              onPress={toggleCameraFacing}
-            >
-              <AntDesign name="retweet" size={50} color="white" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.captureCameraContainer}>
-            <TouchableOpacity style={styles.flipButton} onPress={capturePhoto}>
-              <AntDesign name="camera" size={50} color="white" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.closeCameraContainer}>
-            <TouchableOpacity
-              style={styles.cameraClose}
-              onPress={handleCameraClosePress}
-            >
-              <Entypo name="circle-with-cross" size={70} color="white" />
-            </TouchableOpacity>
-          </View>
-        </CameraView>
-      }
+          <Entypo name="cross" size={45} color="white" />
+        </TouchableOpacity>
+      </View>
+      <CameraView
+        ref={cameraRef}
+        style={styles.cameraContainer}
+        facing={facing}
+      ></CameraView>
+
+      <View style={styles.botCameraControl}>
+        <ActionButton
+          onPress={toggleCameraFacing}
+          icon={<AntDesign name="retweet" size={50} color="white" />}
+          containerStyle={styles.flipButtonContainer}
+        />
+        <ActionButton
+          onPress={capturePhoto}
+          containerStyle={styles.captureButtonContainer}
+        />
+      </View>
     </View>
   );
 }
@@ -99,58 +87,65 @@ export default function CameraComponent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
+    backgroundColor: "white",
+  },
+  permissionContainer: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
   },
-
   cameraContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    aspectRatio: 1, // Maintains square aspect ratio
-    maxWidth: "100%", // Limits max size
-    maxHeight: "100%", // Limits max size
+    width: screenWidth,
   },
 
-  flipCameraContainer: {
-    position: "absolute",
-    bottom: 10,
-    left: 300,
+  topCameraBar: {
+    width: "100%",
+    height: "10%",
+    backgroundColor: "black",
+    flexDirection: "row", // Make it row layout to position text and close button
+    alignItems: "center", // Vertically center the items
+    paddingHorizontal: 10,
+    position: "relative", // Necessary for absolute positioning of the close button
   },
-
-  flipButton: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: 100,
-    width: 90,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: "black",
+  textStyleContainer: {
+    flex: 1, // Allow text container to take available space
+    justifyContent: "center", // Vertically center the text
+    alignItems: "center", // Horizontally center the text
   },
-
-  closeCameraContainer: {
-    position: "absolute",
-    top: "-2%",
-    left: "-2%",
-  },
-
-  cameraClose: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: 100,
-    width: 90,
-    borderRadius: 40,
-  },
-
-  captureCameraContainer: {
-    position: "absolute",
-
-    bottom: "1%",
-  },
-
   textStyle: {
-    textAlign: "center",
-    fontSize: 20,
+    fontSize: 30,
     color: "white",
+  },
+  cameraClose: {
+    position: "absolute", // Position the close button absolutely
+    top: 0,
+    left: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 70,
+    width: 70,
+  },
+  botCameraControl: {
+    width: "100%",
+    height: "15%",
+    backgroundColor: "black",
+    flexDirection: "row", // Make it row layout to position text and close button
+    alignItems: "center", // Vertically center the items
+    justifyContent: "center",
+    paddingHorizontal: 0,
+    position: "absolute", //Button always at the bottom
+    bottom: 0,
+  },
+  flipButtonContainer: {
+    position: "absolute",
+    right: 10,
+  },
+  captureButtonContainer: {
+    borderRadius: 50,
+    borderWidth: 6,
+    borderColor: "white",
   },
 });

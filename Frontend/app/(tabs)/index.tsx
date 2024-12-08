@@ -6,9 +6,12 @@ import { useRouter } from "expo-router";
 export default function Index() {
   const router = useRouter();
   const [showCamera, setShowCamera] = useState(false);
-  const handleCameraPress = () => {
+  const navigateToCamera = () => {
     router.push("/camera-screen");
     setShowCamera(true);
+  };
+  const navigateToFeed = () => {
+    router.push("/(feed)/feed-screen");
   };
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
@@ -17,7 +20,11 @@ export default function Index() {
         {/* This button will take you to the camera scene. */}
         <Button
           title="Open Camera"
-          onPress={handleCameraPress} // Navigate to the camera route
+          onPress={navigateToCamera} // Navigate to the camera route
+        />
+        <Button
+          title="Open Feed"
+          onPress={navigateToFeed} // Navigate to the camera route
         />
       </View>
     </SafeAreaView>

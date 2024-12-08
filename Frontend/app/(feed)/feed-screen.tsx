@@ -1,15 +1,22 @@
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CameraComponent from "@/components/CameraComponent";
-import { useState } from "react";
+
 import { useRouter } from "expo-router";
+import Feed from "@/components/Feed";
 
 export default function Index() {
   const router = useRouter();
 
+  const navigateToHome = () => {
+    router.back();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <CameraComponent />
+      <TouchableOpacity onPress={navigateToHome}>
+        <Text style={styles.textStyle}>Go back</Text>
+      </TouchableOpacity>
+      <Feed />
     </SafeAreaView>
   );
 }

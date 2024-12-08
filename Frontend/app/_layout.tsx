@@ -8,6 +8,10 @@ export default function Layout() {
         name="(camera)"
         options={{ headerShown: false }} // No header for the camera screen
       />
+      <Stack.Screen
+        name="(feed)"
+        options={{ headerShown: false }} // No header for the feed screen
+      />
     </Stack>
   );
 }

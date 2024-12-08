@@ -9,6 +9,12 @@ import { CameraCapturedPicture } from "expo-camera";
 import { useRouter } from "expo-router";
 import * as MediaLibrary from "expo-media-library";
 import { Dimensions } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  savePhotosToStorage,
+  Photo,
+  getPhotosFromStorage,
+} from "../utils/photoStorage";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -27,11 +33,24 @@ const PhotoPreviewSection = ({
 
   const handleSubmitPhoto = async () => {
     //if saving photo so move this to preview screen.
-    if (photo?.uri) {
-      await MediaLibrary.saveToLibraryAsync(photo.uri);
-      await alert("Photo saved to your gallery!");
-      //after saving the photo and alerting the user, then go back to home screen.
+    if (photo?.uri && photo.base64) {
+      const newPhoto: Photo = {
+        base64: photo.base64,
+        uri: photo.uri,
+        timestamp: Date.now(),
+      };
+      //goes into utils/photoStorage and runs the function
+      const exisitingPhotos = await getPhotosFromStorage();
+      //adds new photo to the storage.
+      exisitingPhotos.push(newPhoto);
+      //save the photos
+      await savePhotosToStorage(exisitingPhotos);
+
       router.push("/(tabs)");
+      //this saves to users device album.
+      //   await MediaLibrary.saveToLibraryAsync(photo.uri);
+      //   await alert("Photo saved to your gallery!");
+      //after saving the photo and alerting the user, then go back to home screen.
     }
   };
   return (

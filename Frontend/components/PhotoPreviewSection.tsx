@@ -46,7 +46,7 @@ const PhotoPreviewSection = ({
       //save the photos
       await savePhotosToStorage(exisitingPhotos);
 
-      router.push("/(tabs)");
+      router.push("/(feed)/feed-screen");
       //this saves to users device album.
       //   await MediaLibrary.saveToLibraryAsync(photo.uri);
       //   await alert("Photo saved to your gallery!");

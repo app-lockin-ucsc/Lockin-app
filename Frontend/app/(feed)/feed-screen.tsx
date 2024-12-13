@@ -1,6 +1,5 @@
 import { Text, View, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import { useRouter } from "expo-router";
 import Feed from "@/components/Feed";
 
@@ -8,7 +7,7 @@ export default function Index() {
   const router = useRouter();
 
   const navigateToHome = () => {
-    router.back();
+    router.push("/(tabs)");
   };
 
   return (

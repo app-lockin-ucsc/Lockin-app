@@ -1,15 +1,11 @@
 // ActionButton.tsx
 import React from "react";
 import { TouchableOpacity, View, StyleSheet, Image, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { CameraCapturedPicture } from "expo-camera";
 import { useRouter } from "expo-router";
-import * as MediaLibrary from "expo-media-library";
 import { Dimensions } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   savePhotosToStorage,
   Photo,
@@ -47,10 +43,6 @@ const PhotoPreviewSection = ({
       await savePhotosToStorage(exisitingPhotos);
 
       router.push("/(feed)/feed-screen");
-      //this saves to users device album.
-      //   await MediaLibrary.saveToLibraryAsync(photo.uri);
-      //   await alert("Photo saved to your gallery!");
-      //after saving the photo and alerting the user, then go back to home screen.
     }
   };
   return (
@@ -69,10 +61,7 @@ const PhotoPreviewSection = ({
 
       <View style={styles.box}>
         <Image
-          style={[
-            styles.previewContainer,
-            facing == "front" && { transform: [{ scaleX: -1 }] },
-          ]}
+          style={[styles.previewContainer]}
           source={{ uri: "data:image/jpg;base64," + photo.base64 }}
         />
       </View>

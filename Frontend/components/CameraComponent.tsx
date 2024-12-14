@@ -15,6 +15,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import { Dimensions } from "react-native";
 import ActionButton from "./ActionButton";
 import PhotoPreviewSection from "./PhotoPreviewSection";
+import { ImageManipulator, FlipType, SaveFormat } from "expo-image-manipulator"; // uninstall this!!
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -39,15 +40,19 @@ export default function CameraComponent() {
   const handleCameraCapturePress = () => {
     capturePhoto();
   };
-
   const toggleCameraFacing = () =>
     setFacing((current) => (current === "back" ? "front" : "back"));
 
   const capturePhoto = async () => {
-    if (cameraRef.current) {
-      const options = { quality: 1, base64: true, exif: false };
-      const photo = await cameraRef.current.takePictureAsync(options);
-      setPhoto(photo);
+    try {
+      if (cameraRef.current) {
+        const options = { quality: 1, base64: true, exif: false };
+        const photo = await cameraRef.current.takePictureAsync(options);
+        setPhoto(photo);
+      }
+    } catch (error) {
+      console.error("Error capturing photo:", error);
+      throw error;
     }
   };
 
@@ -99,6 +104,7 @@ export default function CameraComponent() {
       </View>
       <TouchableWithoutFeedback onPress={handleDoubleTap}>
         <CameraView
+          mirror={true}
           ref={cameraRef}
           style={styles.cameraContainer}
           facing={facing}

@@ -28,21 +28,26 @@ const PhotoPreviewSection = ({
   const router = useRouter();
 
   const handleSubmitPhoto = async () => {
-    //if saving photo so move this to preview screen.
-    if (photo?.uri && photo.base64) {
-      const newPhoto: Photo = {
-        base64: photo.base64,
-        uri: photo.uri,
-        timestamp: Date.now(),
-      };
-      //goes into utils/photoStorage and runs the function
-      const exisitingPhotos = await getPhotosFromStorage();
-      //adds new photo to the storage.
-      exisitingPhotos.push(newPhoto);
-      //save the photos
-      await savePhotosToStorage(exisitingPhotos);
+    try {
+      //if saving photo so move this to preview screen.
+      if (photo?.uri && photo.base64) {
+        const newPhoto: Photo = {
+          base64: photo.base64,
+          uri: photo.uri,
+          timestamp: Date.now(),
+        };
+        //goes into utils/photoStorage and runs the function
+        const exisitingPhotos = await getPhotosFromStorage();
+        //adds new photo to the storage.
+        exisitingPhotos.push(newPhoto);
+        //save the photos
+        await savePhotosToStorage(exisitingPhotos);
 
-      router.push("/(feed)/feed-screen");
+        router.push("/(feed)/feed-screen");
+      }
+    } catch (error) {
+      console.error("Error submitting photo:", error);
+      throw error; // Re-throw the error to be handled by the caller
     }
   };
   return (

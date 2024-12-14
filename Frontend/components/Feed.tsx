@@ -27,23 +27,33 @@ const Feed = () => {
   }, []);
 
   const loadPhotos = async () => {
-    setLoading(true);
-    const loadedPhotos = await getPhotosFromStorage();
-    const filteredPhotos = loadedPhotos
-      .filter((photo) => {
-        const currentTime = Date.now();
-        return currentTime - photo.timestamp <= 24 * 60 * 60 * 1000; // gets photos only taken in the past 24 hours.
-      })
-      .sort((a, b) => b.timestamp - a.timestamp);
+    try {
+      setLoading(true);
+      const loadedPhotos = await getPhotosFromStorage();
+      const filteredPhotos = loadedPhotos
+        .filter((photo) => {
+          const currentTime = Date.now();
+          return currentTime - photo.timestamp <= 24 * 60 * 60 * 1000; // gets photos only taken in the past 24 hours.
+        })
+        .sort((a, b) => b.timestamp - a.timestamp);
 
-    setPhotos(filteredPhotos);
-    setLoading(false);
+      setPhotos(filteredPhotos);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error Loading photos:", error);
+      throw error;
+    }
   };
 
   const onRefresh = async () => {
-    setRefreshing(true);
-    await loadPhotos();
-    setRefreshing(false);
+    try {
+      setRefreshing(true);
+      await loadPhotos();
+      setRefreshing(false);
+    } catch (error) {
+      console.error("Error Refreshing page.", error);
+      throw error;
+    }
   };
 
   // Format date (e.g., "December 8, 2024, 3:30 PM")

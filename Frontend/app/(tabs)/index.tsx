@@ -1,5 +1,7 @@
 import { Text, View, StyleSheet, Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import CircularProgress from "@/components/CircularProgress";
+import { Component } from "react";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 
@@ -17,6 +19,7 @@ export default function Index() {
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
         <Text style={styles.textStyle}>Welcome Screen.</Text>
+        <CircularProgress /> 
         {/* This button will take you to the camera scene. */}
         <Button
           title="Open Camera"

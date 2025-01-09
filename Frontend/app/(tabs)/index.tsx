@@ -2,7 +2,6 @@ import { Text, View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CircularProgress from "@/components/CircularProgress";
 import { Component } from "react";
-import CountdownTimer from "@/components/CountdownTimer";
 
 export default function Index() {
   return (

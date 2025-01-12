@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+
+# Build artifacts
+ios/build/
+android/app/build/
+android/build/
+*.apk
+*.aab
+
+# macOS
+*.xcworkspace
+*.xcodeproj/xcuserdata/
+*.xcscmblueprint
+
+# Windows
+*.sln
+*.suo
+*.user
+*.ncb
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.pdb
+*.obj
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# Expo-specific files
+.expo/
+
+# Local configuration files
+*.env

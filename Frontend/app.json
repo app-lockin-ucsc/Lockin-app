@@ -46,7 +46,8 @@
           "microphonePermission": "Allow $(Lockin) to access your microphone",
           "recordAudioAndroid": true
         }
-      ]
+      ],
+      "expo-build-properties"
     ],
     "experiments": {
       "typedRoutes": true

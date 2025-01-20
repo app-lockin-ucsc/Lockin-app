@@ -12,6 +12,7 @@ export default function Layout() {
         name="(feed)"
         options={{ headerShown: false }} // No header for the feed screen
       />
+
     </Stack>
   );
 }

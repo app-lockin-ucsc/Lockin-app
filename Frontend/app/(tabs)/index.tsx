@@ -15,6 +15,9 @@ export default function Index() {
   const navigateToFeed = () => {
     router.push("/(feed)/feed-screen");
   };
+  const navigateToLogin = () => { // README: Temporary to test login screen. This will be the first screen when piecing the app together
+    router.push("/login-screen")
+  }
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
@@ -28,6 +31,8 @@ export default function Index() {
         <Button
           title="Open Feed"
           onPress={navigateToFeed} // Navigate to the camera route
+        />
+        <Button title={"Login"} onPress={navigateToLogin} // Navigate to login
         />
       </View>
     </SafeAreaView>

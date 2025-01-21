@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Button, TextInput} from 'react-native';
+import {Button, StyleSheet, TextInput, Text} from 'react-native';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import firebase from '@react-native-firebase/app';
 
@@ -7,9 +7,12 @@ export default function LoginScreen() {
   function PhoneSignIn() {
     // If null, no SMS has been sent
     const [confirm, setConfirm] = useState<FirebaseAuthTypes.ConfirmationResult | null>(null);
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
     firebase.auth().settings.appVerificationDisabledForTesting = true; // README: This is for development only, disable on production
 
+    // Phone Number
+    const [number, setNumber] = useState<string>('');
     // Verification code (OTP - One-Time-Passcode)
     const [code, setCode] = useState<string>('');
 
@@ -20,6 +23,7 @@ export default function LoginScreen() {
         // Actually, if they try to enter it, they will get an error message because the code was already used in the background.
         // In this function, make sure you hide the component(s) for entering the code and/or navigate away from this screen.
         // It is also recommended to display a message to the user informing them that they have successfully logged in.
+        setLoggedIn(true);
       }
     }
 
@@ -34,7 +38,7 @@ export default function LoginScreen() {
         const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
         setConfirm(confirmation);
       } catch (error) {
-        console.error('Error during phone sign-in:', error);
+        console.error(error); // Most likely this is because of billing
       }
     }
 
@@ -51,9 +55,15 @@ export default function LoginScreen() {
     if (!confirm) {
       return (
         <>
+          <TextInput
+            value={number}
+            onChangeText={(text: string) => setNumber(text)}
+            placeholder="+1 650-555-3434"
+            style={styles.textBox}
+          />
           <Button
             title="Phone Number Sign In"
-            onPress={() => signInWithPhoneNumber('+1 650-555-3434')}
+            onPress={() => signInWithPhoneNumber(number)}
           />
         </>
 
@@ -67,12 +77,23 @@ export default function LoginScreen() {
           onChangeText={(text: string) => setCode(text)}
           placeholder="Enter verification code"
           keyboardType="numeric"
+          style={styles.textBox}
         />
         <Button title={"Cancel"} onPress={() => setConfirm(null)}/>
         <Button title="Confirm Code" onPress={() => confirmCode()}/>
+        {loggedIn && <Text>You are logged in!</Text>}
       </>
     );
   }
 
   return <PhoneSignIn/>;
 }
+
+const styles = StyleSheet.create({
+  textBox: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    paddingLeft: 10
+  }
+});

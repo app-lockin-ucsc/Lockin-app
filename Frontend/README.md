@@ -9,7 +9,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    ```bash
    npm install
    ```
-2. Prebuild appgit
+2. Prebuild app
    ```bash
    npx expo prebuild --clean
    ```
@@ -22,5 +22,6 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    ```bash
     npx expo run:android # android
    ```
-> Note: Firebase does not work with Expo Go, so we need to prebuild and run locally (or using eas). This means that you need [Android Studio](https://developer.android.com/studio) to develop build android and MacOS to build for iOS unless you use [eas](https://expo.dev/eas).
+> Firebase does not work with Expo Go, so we need to prebuild and run locally (or using eas). This means that you need [Android Studio](https://developer.android.com/studio) to develop build android and MacOS to build for iOS unless you use [eas](https://expo.dev/eas).
 
+> If you are trying to test phone authentication, you need to use a test number. Test numbers are available in the firebase console > authentication > sign in method > phone > Phone numbers for testing

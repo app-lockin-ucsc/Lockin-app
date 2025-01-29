@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "179371031543",
+    "project_id": "lockin-app-6c988",
+    "storage_bucket": "lockin-app-6c988.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179371031543:android:9003244e4121cdce614cf2",
+        "android_client_info": {
+          "package_name": "com.lockin.lockin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179371031543-1p25aiaangplessj2sbru13m04569duu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lockin.lockin",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "179371031543-4ifm7l5v8hgmap8n8hvqd0tqsllq8gla.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnmvmsks0CX_91wPaQ7flEspcZSNY1kLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179371031543-4ifm7l5v8hgmap8n8hvqd0tqsllq8gla.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "179371031543-um1edru0nprig1gjodtj8aq3n1d6cstl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lockin.lockin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,7 +2,6 @@ import { Stack } from "expo-router/stack";
 import { FIREBASE_AUTH } from "@/FirebaseConfig";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { useSortedScreens } from "expo-router/build/useScreens";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator } from "react-native";
 
@@ -40,20 +39,23 @@ export default function Layout() {
     <Stack>
       {user ? (
         <>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="(tabs)"
+            options={{ headerShown: false, gestureEnabled: false }}
+          />
           <Stack.Screen
             name="(camera)"
-            options={{ headerShown: false }} // No header for the camera screen
+            options={{ headerShown: false, gestureEnabled: false }} // No header for the camera screen
           />
           <Stack.Screen
             name="(feed)"
-            options={{ headerShown: false }} // No header for the feed screen
+            options={{ headerShown: false, gestureEnabled: false }} // No header for the feed screen
           />
         </>
       ) : (
         <Stack.Screen
           name="(auth)"
-          options={{ headerShown: false }} // No header for the auth screen
+          options={{ headerShown: false, gestureEnabled: false }} // No header for the auth screen
         />
       )}
     </Stack>

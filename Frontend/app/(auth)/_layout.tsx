@@ -6,11 +6,11 @@ export default function AuthLayout() {
     <Stack>
       <Stack.Screen
         name="signup-screen"
-        options={{ headerShown: false }} // Hide header for signup
+        options={{ headerShown: false, gestureEnabled: false }} // Hide header for signup
       />
       <Stack.Screen
         name="login-screen"
-        options={{ headerShown: false }} // Hide header for signin
+        options={{ headerShown: false, gestureEnabled: false }} // Hide header for signin
       />
     </Stack>
   );

@@ -5,6 +5,7 @@ import {
   Button,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
@@ -27,7 +28,7 @@ export default function Index() {
         router.navigate("/(tabs)");
       });
     } catch (error) {
-      console.error("Signup Failed: ", error);
+      Alert.alert("Signup Failed: " + error);
     }
   };
 

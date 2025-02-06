@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, StyleSheet, TextInput, Text } from "react-native";
+import { Button, StyleSheet, TextInput, Text, Alert } from "react-native";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import firebase from "@react-native-firebase/app";
 import { router } from "expo-router";
@@ -36,6 +36,7 @@ export default function LoginScreen() {
         const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
         setConfirm(confirmation);
       } catch (error) {
+        Alert.alert("Error", `You must enter a valid number. ${error}`);
         console.error(error); // Most likely this is because of billing
       }
     }
@@ -63,6 +64,7 @@ export default function LoginScreen() {
             placeholder="+1 650-555-3434"
             placeholderTextColor="grey"
             style={styles.textBox}
+            keyboardType="phone-pad"
           />
           <Button
             title="Phone Number Sign In"
@@ -102,6 +104,7 @@ const styles = StyleSheet.create({
   textBox: {
     width: "90%",
     height: 40,
+    color: "white",
     borderColor: "gray",
     borderWidth: 1,
     paddingLeft: 10,

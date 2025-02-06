@@ -15,14 +15,15 @@ export default function Index() {
   const navigateToFeed = () => {
     router.push("/(feed)/feed-screen");
   };
-  const navigateToLogin = () => { // README: Temporary to test login screen. This will be the first screen when piecing the app together
-    router.push("/login-screen")
-  }
+  const navigateToLogin = () => {
+    // README: Temporary to test login screen. This will be the first screen when piecing the app together
+    router.push("/login-screen");
+  };
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
         <Text style={styles.textStyle}>Welcome Screen.</Text>
-        <CircularProgress /> 
+        <CircularProgress />
         {/* This button will take you to the camera scene. */}
         <Button
           title="Open Camera"
@@ -32,8 +33,8 @@ export default function Index() {
           title="Open Feed"
           onPress={navigateToFeed} // Navigate to the camera route
         />
-        <Button title={"Login"} onPress={navigateToLogin} // Navigate to login
-        />
+        {/* <Button title={"Login"} onPress={navigateToLogin} // Navigate to login
+        /> */}
       </View>
     </SafeAreaView>
   );

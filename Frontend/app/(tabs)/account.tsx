@@ -23,7 +23,7 @@ export default function Account() {
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
-        <Text style={styles.textStyle}>{user?.phoneNumber}</Text>
+        <Text style={styles.textStyle}>{user?.displayName}</Text>
         <Button title="Sign out" onPress={handleSignout}></Button>
       </View>
     </SafeAreaView>

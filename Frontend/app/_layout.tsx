@@ -14,10 +14,7 @@ export default function Layout() {
     const checkAlreadySignedIn = async () => {
       const userStored = await AsyncStorage.getItem("user");
       if (userStored) {
-        console.log("User already exists!!!!");
-
         setUser(JSON.parse(userStored));
-        router.replace("/(tabs)");
       } else {
         setUser(null);
       }
@@ -34,25 +31,35 @@ export default function Layout() {
       if (authUser) {
         AsyncStorage.setItem("user", JSON.stringify(authUser));
         setUser(authUser); // Update the user state
-        router.replace("/(tabs)");
       } else {
         AsyncStorage.removeItem("user");
         setUser(null);
-        router.replace("/(login)/login-screen");
       }
+      setLoading(false);
     });
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  // if (loading) {
-  //   return (
-  //     <SafeAreaView
-  //       style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-  //     >
-  //       <ActivityIndicator size="large" />
-  //     </SafeAreaView>
-  //   );
-  // }
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        router.replace("/(tabs)");
+      } else {
+        router.replace("/(login)/login-screen");
+      }
+    }
+  }, [user, loading]);
+
+  if (loading) {
+    return (
+      <SafeAreaView
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      >
+        <ActivityIndicator size="large" />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

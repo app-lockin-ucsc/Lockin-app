@@ -8,6 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen() {
   function PhoneSignIn() {
+    firebase.auth().settings.appVerificationDisabledForTesting = true;
     // If null, no SMS has been sent
     const [confirm, setConfirm] =
       useState<FirebaseAuthTypes.ConfirmationResult | null>(null);
@@ -49,12 +50,11 @@ export default function LoginScreen() {
         const jsonVal = JSON.stringify(userCred?.user);
         await AsyncStorage.setItem("user", jsonVal); // saves user logged in
 
-        await router.replace("/(tabs)");
+        router.replace("/create-account");
       } catch (error) {
         console.log("Invalid code.");
       }
     }
-
     if (!confirm) {
       return (
         <SafeAreaView style={styles.safeAreaContainer}>
@@ -64,11 +64,15 @@ export default function LoginScreen() {
             placeholder="+1 650-555-3434"
             placeholderTextColor="grey"
             style={styles.textBox}
-            keyboardType="phone-pad"
+            keyboardType="default"
           />
           <Button
             title="Phone Number Sign In"
             onPress={() => signInWithPhoneNumber(number)}
+          />
+          <Button
+            title="Phone Number Sign In"
+            onPress={() => router.replace("/(tabs)")}
           />
         </SafeAreaView>
       );
@@ -86,7 +90,6 @@ export default function LoginScreen() {
         />
         <Button title={"Cancel"} onPress={() => setConfirm(null)} />
         <Button title="Confirm Code" onPress={() => confirmCode()} />
-        {loggedIn && <Text>You are logged in!</Text>}
       </SafeAreaView>
     );
   }

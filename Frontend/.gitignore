@@ -39,3 +39,7 @@ app-example
 
 # IDE Specific
 .idea
+
+# native apps
+android
+ios

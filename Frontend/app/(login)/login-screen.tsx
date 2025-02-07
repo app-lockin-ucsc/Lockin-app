@@ -49,7 +49,6 @@ export default function LoginScreen() {
         const userCred = await confirm.confirm(code);
         const jsonVal = JSON.stringify(userCred?.user);
         await AsyncStorage.setItem("user", jsonVal); // saves user logged in
-
         router.replace("/create-account");
       } catch (error) {
         console.log("Invalid code.");

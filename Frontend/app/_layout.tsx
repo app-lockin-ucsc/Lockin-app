@@ -42,7 +42,9 @@ export default function Layout() {
 
   useEffect(() => {
     if (!loading) {
-      if (user) {
+      if (user && !user.displayName) {
+        router.replace("/create-account");
+      } else if (user) {
         router.replace("/(tabs)");
       } else {
         router.replace("/(login)/login-screen");
@@ -76,6 +78,10 @@ export default function Layout() {
         options={{
           headerShown: false,
         }}
+      />
+      <Stack.Screen
+        name="(settings)"
+        options={{ headerShown: false }} // No header for the settings screen
       />
     </Stack>
   );

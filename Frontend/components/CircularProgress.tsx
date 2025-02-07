@@ -7,6 +7,7 @@ import {
   Animated,
   TouchableOpacity,
   Modal,
+  Button,
   Pressable,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker"; // Correct import for Picker
@@ -14,6 +15,7 @@ import AnimatedCircularProgress from "react-native-circular-progress-indicator";
 import Icon from "react-native-vector-icons/FontAwesome"; // Import FontAwesome for icons
 import { BlurView } from "expo-blur"; // Import BlurView from expo-blur
 import Entypo from "@expo/vector-icons/Entypo";
+import { router } from "expo-router";
 
 const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
@@ -105,6 +107,10 @@ export default function CircularProgress() {
     )}:${String(secondsRemaining).padStart(2, "0")}`;
   };
 
+  const navigateToCamera = () => {
+    router.replace("/camera-screen");
+  };
+
   const toggleLock = () => {
     Animated.sequence([
       Animated.timing(lockAnimation, {
@@ -146,88 +152,110 @@ export default function CircularProgress() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.progressContainer}>
-        {/* Use dailyProgress for 24-hour timer */}
-        <AnimatedCircularProgress
-          value={mode === "daily" ? dailyProgress : progress} // Show either dailyProgress or custom progress
-          maxValue={100}
-          radius={170}
-          duration={500}
-          progressValueColor={"#FFFFFF"}
-          activeStrokeColor={"black"}
-          inActiveStrokeColor={"white"}
-          activeStrokeWidth={27}
-          inActiveStrokeWidth={25}
-          showProgressValue={false}
-          strokeLinecap="square"
-        />
-        <View style={styles.iconTextContainer}>
-          <TouchableOpacity onPress={toggleLock} style={styles.iconContainer}>
-            <Animated.View style={{ transform: [{ scale: lockAnimation }] }}>
-              <AnimatedIcon
-                name={isLocked ? "lock" : "unlock-alt"}
-                size={100}
-                color={"white"}
-              />
-            </Animated.View>
-          </TouchableOpacity>
-          <Text style={styles.timerText}>{formatTime(timeRemaining)}</Text>
-        </View>
-      </View>
-      <Modal visible={showModal} transparent={true} animationType="slide">
-        <BlurView intensity={50} style={styles.blurBackground}>
-          <SafeAreaView style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>LockIn Duration</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={String(selectedHours)}
-                itemStyle={{ color: "white" }}
-                onValueChange={(itemValue) =>
-                  setSelectedHours(Number(itemValue))
-                }
-                style={[styles.picker, { width: 120 }]} // Adjust the width
+      {timeRemaining == 0 && isLocked ? (
+        <>
+          {/* Current issue here is that when it hits 0 it instantly switches 
+        before the animation is done. HAVE TO FIX */}
+          <Text style={styles.timerText}>Timer is now done!</Text>
+          <Button
+            title="Open Camera"
+            onPress={navigateToCamera} // Navigate to the camera route
+          />
+        </>
+      ) : (
+        <>
+          <View style={styles.progressContainer}>
+            {/* Use dailyProgress for 24-hour timer */}
+            <AnimatedCircularProgress
+              value={mode === "daily" ? dailyProgress : progress} // Show either dailyProgress or custom progress
+              maxValue={100}
+              radius={170}
+              duration={500}
+              progressValueColor={"#FFFFFF"}
+              activeStrokeColor={"black"}
+              inActiveStrokeColor={"white"}
+              activeStrokeWidth={27}
+              inActiveStrokeWidth={25}
+              showProgressValue={false}
+              strokeLinecap="square"
+            />
+            <View style={styles.iconTextContainer}>
+              <TouchableOpacity
+                onPress={toggleLock}
+                style={styles.iconContainer}
               >
-                {Array.from({ length: 24 }, (_, i) => (
-                  <Picker.Item key={i} label={`${i}h`} value={String(i)} />
-                ))}
-              </Picker>
-              <Picker
-                itemStyle={{ color: "white" }}
-                selectedValue={String(selectedMinutes)}
-                onValueChange={(itemValue) =>
-                  setSelectedMinutes(Number(itemValue))
-                }
-                style={[styles.picker, { width: 120 }]} // Adjust the width
-              >
-                {Array.from({ length: 60 }, (_, i) => (
-                  <Picker.Item key={i} label={`${i}m`} value={String(i)} />
-                ))}
-              </Picker>
-              <Picker
-                itemStyle={{ color: "white" }}
-                selectedValue={String(selectedSeconds)}
-                onValueChange={(itemValue) =>
-                  setSelectedSeconds(Number(itemValue))
-                }
-                style={[styles.picker, { width: 120 }]} // Adjust the width
-              >
-                {Array.from({ length: 60 }, (_, i) => (
-                  <Picker.Item key={i} label={`${i}s`} value={String(i)} />
-                ))}
-              </Picker>
+                <Animated.View
+                  style={{ transform: [{ scale: lockAnimation }] }}
+                >
+                  <AnimatedIcon
+                    name={isLocked ? "lock" : "unlock-alt"}
+                    size={100}
+                    color={"white"}
+                  />
+                </Animated.View>
+              </TouchableOpacity>
+              <Text style={styles.timerText}>{formatTime(timeRemaining)}</Text>
             </View>
-            <Pressable style={styles.startButton} onPress={startCustomTimer}>
-              <Text style={styles.startButtonText}>LockIn</Text>
-            </Pressable>
-            <TouchableOpacity
-              onPress={cancelCustomTimer}
-              style={styles.cancelButton}
-            >
-              <Entypo name="cross" size={40} color="white" />
-            </TouchableOpacity>
-          </SafeAreaView>
-        </BlurView>
-      </Modal>
+          </View>
+          <Modal visible={showModal} transparent={true} animationType="slide">
+            <BlurView intensity={50} style={styles.blurBackground}>
+              <SafeAreaView style={styles.modalContainer}>
+                <Text style={styles.modalTitle}>LockIn Duration</Text>
+                <View style={styles.pickerContainer}>
+                  <Picker
+                    selectedValue={String(selectedHours)}
+                    itemStyle={{ color: "white" }}
+                    onValueChange={(itemValue) =>
+                      setSelectedHours(Number(itemValue))
+                    }
+                    style={[styles.picker, { width: 120 }]} // Adjust the width
+                  >
+                    {Array.from({ length: 24 }, (_, i) => (
+                      <Picker.Item key={i} label={`${i}h`} value={String(i)} />
+                    ))}
+                  </Picker>
+                  <Picker
+                    itemStyle={{ color: "white" }}
+                    selectedValue={String(selectedMinutes)}
+                    onValueChange={(itemValue) =>
+                      setSelectedMinutes(Number(itemValue))
+                    }
+                    style={[styles.picker, { width: 120 }]} // Adjust the width
+                  >
+                    {Array.from({ length: 60 }, (_, i) => (
+                      <Picker.Item key={i} label={`${i}m`} value={String(i)} />
+                    ))}
+                  </Picker>
+                  <Picker
+                    itemStyle={{ color: "white" }}
+                    selectedValue={String(selectedSeconds)}
+                    onValueChange={(itemValue) =>
+                      setSelectedSeconds(Number(itemValue))
+                    }
+                    style={[styles.picker, { width: 120 }]} // Adjust the width
+                  >
+                    {Array.from({ length: 60 }, (_, i) => (
+                      <Picker.Item key={i} label={`${i}s`} value={String(i)} />
+                    ))}
+                  </Picker>
+                </View>
+                <Pressable
+                  style={styles.startButton}
+                  onPress={startCustomTimer}
+                >
+                  <Text style={styles.startButtonText}>LockIn</Text>
+                </Pressable>
+                <TouchableOpacity
+                  onPress={cancelCustomTimer}
+                  style={styles.cancelButton}
+                >
+                  <Entypo name="cross" size={40} color="white" />
+                </TouchableOpacity>
+              </SafeAreaView>
+            </BlurView>
+          </Modal>
+        </>
+      )}
     </SafeAreaView>
   );
 }

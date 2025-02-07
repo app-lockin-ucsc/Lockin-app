@@ -14,7 +14,6 @@ import { Dimensions } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import * as MediaLibrary from "expo-media-library";
 import FlashMessage, { showMessage } from "react-native-flash-message";
-
 const { width, height } = Dimensions.get("window");
 
 const Feed = () => {
@@ -100,7 +99,7 @@ const Feed = () => {
                 talk to team and ask for a possible new placement. Maybe under neath like a caption typa vibe?*/}
               <View style={styles.textContainer}>
                 {/*For later use. BUT after lockin complete. show how long the user was lockedin for. */}
-                <Text style={styles.textStyle}>Locked in for 1 hour</Text>
+                <Text style={styles.textStyle}>Add time lockedin for here</Text>
                 <Text style={styles.textStyle}>
                   {formatTimestamp(item.timestamp)}
                 </Text>

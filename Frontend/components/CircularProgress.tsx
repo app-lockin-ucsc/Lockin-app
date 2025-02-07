@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, View, Text, StyleSheet, Animated, TouchableOpacity, Modal, Pressable } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+} from "react-native";
 import { Picker } from "@react-native-picker/picker"; // Correct import for Picker
 import AnimatedCircularProgress from "react-native-circular-progress-indicator";
 import Icon from "react-native-vector-icons/FontAwesome"; // Import FontAwesome for icons
 import { BlurView } from "expo-blur"; // Import BlurView from expo-blur
-import Entypo from '@expo/vector-icons/Entypo';
+import Entypo from "@expo/vector-icons/Entypo";
 
 const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
@@ -22,7 +31,7 @@ export default function CircularProgress() {
   const [selectedSeconds, setSelectedSeconds] = useState<number>(0);
 
   const [mode, setMode] = useState<"daily" | "custom">("daily"); // 'daily' or 'custom'
-  
+
   // Reset the timer values whenever the modal is shown
   useEffect(() => {
     if (showModal) {
@@ -39,23 +48,47 @@ export default function CircularProgress() {
 
       // Daily timer logic (24-hour countdown)
       if (mode === "daily") {
-        const targetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 24, 0, 0); // Midnight
+        const targetTime = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+          24,
+          0,
+          0
+        ); // Midnight
         const remainingTime = targetTime.getTime() - now.getTime();
-        
+
         if (remainingTime <= 0) {
           setDailyProgress(100);
           setTimeRemaining(0);
         } else {
-          const totalTimeInMillis = targetTime.getTime() - new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0).getTime();
-          const currentProgress = ((totalTimeInMillis - remainingTime) / totalTimeInMillis) * 100;
-          setDailyProgress(currentProgress);  // Update daily progress
-          
+          const totalTimeInMillis =
+            targetTime.getTime() -
+            new Date(
+              now.getFullYear(),
+              now.getMonth(),
+              now.getDate(),
+              0,
+              0,
+              0
+            ).getTime();
+          const currentProgress =
+            ((totalTimeInMillis - remainingTime) / totalTimeInMillis) * 100;
+          setDailyProgress(currentProgress); // Update daily progress
+
           const secondsRemaining = Math.floor(remainingTime / 1000);
           setTimeRemaining(secondsRemaining);
         }
       } else if (mode === "custom" && timeRemaining > 0) {
         setTimeRemaining((prev) => Math.max(prev - 1, 0));
-        setProgress((prevProgress) => Math.min(prevProgress + (100 / (selectedHours * 3600 + selectedMinutes * 60 + selectedSeconds)), 100));
+        setProgress((prevProgress) =>
+          Math.min(
+            prevProgress +
+              100 /
+                (selectedHours * 3600 + selectedMinutes * 60 + selectedSeconds),
+            100
+          )
+        );
       }
     }, 1000);
 
@@ -66,7 +99,10 @@ export default function CircularProgress() {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secondsRemaining = seconds % 60;
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(secondsRemaining).padStart(2, "0")}`;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0"
+    )}:${String(secondsRemaining).padStart(2, "0")}`;
   };
 
   const toggleLock = () => {
@@ -93,7 +129,8 @@ export default function CircularProgress() {
   };
 
   const startCustomTimer = () => {
-    const totalSeconds = selectedHours * 3600 + selectedMinutes * 60 + selectedSeconds;
+    const totalSeconds =
+      selectedHours * 3600 + selectedMinutes * 60 + selectedSeconds;
     setTimeRemaining(totalSeconds);
     setProgress(0); // Reset custom timer progress when starting
     setMode("custom");
@@ -112,7 +149,7 @@ export default function CircularProgress() {
       <View style={styles.progressContainer}>
         {/* Use dailyProgress for 24-hour timer */}
         <AnimatedCircularProgress
-          value={mode === "daily" ? dailyProgress : progress}  // Show either dailyProgress or custom progress
+          value={mode === "daily" ? dailyProgress : progress} // Show either dailyProgress or custom progress
           maxValue={100}
           radius={170}
           duration={500}
@@ -126,57 +163,69 @@ export default function CircularProgress() {
         />
         <View style={styles.iconTextContainer}>
           <TouchableOpacity onPress={toggleLock} style={styles.iconContainer}>
-          <Animated.View style={{ transform: [{ scale: lockAnimation }] }}>
-            <AnimatedIcon 
-              name={isLocked ? "lock" : "unlock-alt"} 
-              size={100} 
-              color={"white"} 
-            />
-          </Animated.View>
+            <Animated.View style={{ transform: [{ scale: lockAnimation }] }}>
+              <AnimatedIcon
+                name={isLocked ? "lock" : "unlock-alt"}
+                size={100}
+                color={"white"}
+              />
+            </Animated.View>
           </TouchableOpacity>
           <Text style={styles.timerText}>{formatTime(timeRemaining)}</Text>
         </View>
       </View>
       <Modal visible={showModal} transparent={true} animationType="slide">
-      <BlurView intensity={50} style={styles.blurBackground}>
-        <SafeAreaView style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>LockIn Duration</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={String(selectedHours)} 
-              onValueChange={(itemValue) => setSelectedHours(Number(itemValue))} 
-              style={[styles.picker, {width: 120}]}  // Adjust the width
-            >
-              {Array.from({ length: 24 }, (_, i) => (
-                <Picker.Item key={i} label={`${i}h`} value={String(i)} /> 
-              ))}
-            </Picker>
-            <Picker
-              selectedValue={String(selectedMinutes)} 
-              onValueChange={(itemValue) => setSelectedMinutes(Number(itemValue))} 
-              style={[styles.picker, {width: 120}]}  // Adjust the width
-            >
-              {Array.from({ length: 60 }, (_, i) => (
-                <Picker.Item key={i} label={`${i}m`} value={String(i)} />
-              ))}
-            </Picker>
-            <Picker
-              selectedValue={String(selectedSeconds)} 
-              onValueChange={(itemValue) => setSelectedSeconds(Number(itemValue))}
-              style={[styles.picker, {width: 120}]}  // Adjust the width
-            >
-              {Array.from({ length: 60 }, (_, i) => (
-                <Picker.Item key={i} label={`${i}s`} value={String(i)} /> 
-              ))}
-            </Picker>
-          </View>
-          <Pressable style={styles.startButton} onPress={startCustomTimer}>
+        <BlurView intensity={50} style={styles.blurBackground}>
+          <SafeAreaView style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>LockIn Duration</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={String(selectedHours)}
+                itemStyle={{ color: "white" }}
+                onValueChange={(itemValue) =>
+                  setSelectedHours(Number(itemValue))
+                }
+                style={[styles.picker, { width: 120 }]} // Adjust the width
+              >
+                {Array.from({ length: 24 }, (_, i) => (
+                  <Picker.Item key={i} label={`${i}h`} value={String(i)} />
+                ))}
+              </Picker>
+              <Picker
+                itemStyle={{ color: "white" }}
+                selectedValue={String(selectedMinutes)}
+                onValueChange={(itemValue) =>
+                  setSelectedMinutes(Number(itemValue))
+                }
+                style={[styles.picker, { width: 120 }]} // Adjust the width
+              >
+                {Array.from({ length: 60 }, (_, i) => (
+                  <Picker.Item key={i} label={`${i}m`} value={String(i)} />
+                ))}
+              </Picker>
+              <Picker
+                itemStyle={{ color: "white" }}
+                selectedValue={String(selectedSeconds)}
+                onValueChange={(itemValue) =>
+                  setSelectedSeconds(Number(itemValue))
+                }
+                style={[styles.picker, { width: 120 }]} // Adjust the width
+              >
+                {Array.from({ length: 60 }, (_, i) => (
+                  <Picker.Item key={i} label={`${i}s`} value={String(i)} />
+                ))}
+              </Picker>
+            </View>
+            <Pressable style={styles.startButton} onPress={startCustomTimer}>
               <Text style={styles.startButtonText}>LockIn</Text>
             </Pressable>
-            <TouchableOpacity onPress={cancelCustomTimer} style={styles.cancelButton}>
+            <TouchableOpacity
+              onPress={cancelCustomTimer}
+              style={styles.cancelButton}
+            >
               <Entypo name="cross" size={40} color="white" />
             </TouchableOpacity>
-        </SafeAreaView>
+          </SafeAreaView>
         </BlurView>
       </Modal>
     </SafeAreaView>
@@ -229,7 +278,7 @@ const styles = StyleSheet.create({
   picker: {
     width: 80,
     color: "white",
-    fontSize: 20,  // Increase the font size for better visibility
+    fontSize: 20, // Increase the font size for better visibility
   },
   blurBackground: {
     flex: 1,

@@ -15,7 +15,6 @@ import Entypo from "@expo/vector-icons/Entypo";
 import { Dimensions } from "react-native";
 import ActionButton from "./ActionButton";
 import PhotoPreviewSection from "./PhotoPreviewSection";
-import { ImageManipulator, FlipType, SaveFormat } from "expo-image-manipulator"; // uninstall this!!
 
 const { width: screenWidth } = Dimensions.get("window");
 

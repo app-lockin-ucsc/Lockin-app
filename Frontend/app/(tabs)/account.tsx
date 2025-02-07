@@ -7,20 +7,13 @@ import {
   Alert,
   TouchableOpacity,
 } from "react-native";
-import auth, { getAuth } from "@react-native-firebase/auth";
+import auth from "@react-native-firebase/auth";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Feather from "@expo/vector-icons/Feather";
 
 export default function Account() {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  const handleSignout = async () => {
-    await auth.signOut();
-    await AsyncStorage.removeItem("user");
-    Alert.alert("User signed out!");
-    router.replace("/(login)/login-screen");
-  };
+  const user = auth().currentUser;
 
   const handleSettingsClick = () => {
     router.replace("/settings-page");
@@ -38,7 +31,6 @@ export default function Account() {
             <Feather name="settings" size={30} color="white" />
           </TouchableOpacity>
         </View>
-        <Button title="Sign out" onPress={handleSignout} />
       </View>
     </SafeAreaView>
   );
@@ -58,14 +50,19 @@ const styles = StyleSheet.create({
   textStyle: {
     color: "white",
     fontSize: 25,
+    width: "75%",
+    textAlign: "center",
   },
   topAlignment: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    width: "100%", // Ensures the container takes full width
+    flexDirection: "row", // Aligns items in a row
+    alignItems: "center", // Align items vertically
+    justifyContent: "center", // Centers the display name
+    position: "relative", // Allows absolute positioning inside
+    padding: 16, // Adds spacing
   },
   settingsAlignment: {
-    position: "absolute",
-    left: 200,
+    position: "absolute", // Allows the settings icon to be positioned separately
+    right: 10, // Moves it to the far right
   },
 });

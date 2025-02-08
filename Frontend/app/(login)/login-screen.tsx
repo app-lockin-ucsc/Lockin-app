@@ -99,7 +99,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1, // Take up the full screen height
-    backgroundColor: "black",
+    backgroundColor: "#0D0D0D",
     justifyContent: "center",
     alignItems: "center",
   },

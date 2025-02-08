@@ -11,6 +11,7 @@ import auth from "@react-native-firebase/auth";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Feather from "@expo/vector-icons/Feather";
+import PhotoStack from "@/components/PhotoStack";
 
 export default function Account() {
   const user = auth().currentUser;
@@ -31,6 +32,7 @@ export default function Account() {
             <Feather name="settings" size={30} color="white" />
           </TouchableOpacity>
         </View>
+        <PhotoStack></PhotoStack>
       </View>
     </SafeAreaView>
   );
@@ -39,12 +41,13 @@ export default function Account() {
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1, // Take up the full screen height
-    backgroundColor: "black",
+    backgroundColor: "#0D0D0D",
   },
   container: {
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
+    gap: 50,
   },
 
   textStyle: {

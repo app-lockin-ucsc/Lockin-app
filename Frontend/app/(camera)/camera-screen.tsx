@@ -17,11 +17,11 @@ export default function Index() {
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1, // Take up the full screen height
-    backgroundColor: "black",
+    backgroundColor: "#0D0D0D",
   },
   container: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "#0D0D0D",
     justifyContent: "flex-start",
     alignItems: "center",
   },

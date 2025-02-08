@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#000",
+    backgroundColor: "#0D0D0D",
   },
   progressContainer: {
     position: "relative",

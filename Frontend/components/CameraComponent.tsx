@@ -109,7 +109,6 @@ export default function CameraComponent() {
           facing={facing}
         ></CameraView>
       </TouchableWithoutFeedback>
-
       <View style={styles.botCameraControl}>
         <ActionButton
           onPress={toggleCameraFacing}
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
   topCameraBar: {
     width: "100%",
     height: "10%",
-    backgroundColor: "black",
+    backgroundColor: "#0D0D0D",
     flexDirection: "row", // Make it row layout to position text and close button
     alignItems: "center", // Vertically center the items
     paddingHorizontal: 10,
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
   botCameraControl: {
     width: "100%",
     height: "15%",
-    backgroundColor: "black",
+    backgroundColor: "#0D0D0D",
     flexDirection: "row", // Make it row layout to position text and close button
     alignItems: "center", // Vertically center the items
     justifyContent: "center",

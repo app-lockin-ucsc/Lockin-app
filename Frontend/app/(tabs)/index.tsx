@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet, Button, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CircularProgress from "@/components/CircularProgress";
 import { Component } from "react";
@@ -22,7 +22,7 @@ export default function Index() {
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
-        <Text style={styles.textStyle}>Welcome Screen.</Text>
+        <Text style={styles.textStyle}>It's time to LockIn.</Text>
         <CircularProgress />
         {/* This button will take you to the camera scene. */}
         <Button
@@ -43,7 +43,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1, // Take up the full screen height
-    backgroundColor: "black",
+    backgroundColor: "#0D0D0D",
   },
   container: {
     flex: 1,

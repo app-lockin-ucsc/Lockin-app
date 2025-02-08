@@ -5,6 +5,7 @@ import {
   Button,
   ActivityIndicator,
   View,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,6 +13,7 @@ import auth, { getAuth } from "@react-native-firebase/auth";
 import { router } from "expo-router";
 import Snackbar from "react-native-snackbar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Entypo from "@expo/vector-icons/Entypo";
 
 export default function SettingsPage() {
   const [displayName, setDisplayName] = useState("");
@@ -20,6 +22,10 @@ export default function SettingsPage() {
 
   const handleUserDisplay = () => {
     return user?.displayName || "Enter a username.";
+  };
+
+  const handleCloseSettings = () => {
+    router.replace("/(tabs)/account");
   };
 
   const handleDisplayNameRecreation = async (username: string) => {
@@ -67,6 +73,12 @@ export default function SettingsPage() {
         </View>
       ) : (
         <>
+          <TouchableOpacity
+            style={styles.cameraClose}
+            onPress={handleCloseSettings}
+          >
+            <Entypo name="cross" size={45} color="white" />
+          </TouchableOpacity>
           <Text style={styles.textStyle}>Change username:</Text>
           <TextInput
             style={styles.textBox}
@@ -91,7 +103,7 @@ export default function SettingsPage() {
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1, // Take up the full screen height
-    backgroundColor: "black",
+    backgroundColor: "#0D0D0D",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -111,5 +123,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  cameraClose: {
+    position: "absolute", // Position the close button absolutely
+    top: "5%",
+    left: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 70,
+    width: 70,
   },
 });

@@ -15,7 +15,9 @@ import AnimatedCircularProgress from "react-native-circular-progress-indicator";
 import Icon from "react-native-vector-icons/FontAwesome"; // Import FontAwesome for icons
 import { BlurView } from "expo-blur"; // Import BlurView from expo-blur
 import Entypo from "@expo/vector-icons/Entypo";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { router } from "expo-router";
+import { useTimeStore } from "@/utils/timeStorage";
 
 const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
@@ -28,6 +30,8 @@ export default function CircularProgress() {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   // Define hours, minutes, and seconds as numbers
+  const { chosenHours, chosenMinutes, chosenSeconds, setTime } = useTimeStore();
+
   const [selectedHours, setSelectedHours] = useState<number>(0);
   const [selectedMinutes, setSelectedMinutes] = useState<number>(0);
   const [selectedSeconds, setSelectedSeconds] = useState<number>(0);
@@ -40,6 +44,10 @@ export default function CircularProgress() {
       setSelectedHours(0);
       setSelectedMinutes(0);
       setSelectedSeconds(0);
+      {
+        /* fix this */
+      }
+      setTime(0, 0, 0);
     }
   }, [showModal]);
 
@@ -112,6 +120,14 @@ export default function CircularProgress() {
   };
 
   const toggleLock = () => {
+    if (isLocked) {
+      {
+        /* fix this */
+      }
+      setTime(selectedHours, selectedMinutes, selectedSeconds);
+      return;
+    }
+
     Animated.sequence([
       Animated.timing(lockAnimation, {
         toValue: 0.98,
@@ -156,11 +172,17 @@ export default function CircularProgress() {
         <>
           {/* Current issue here is that when it hits 0 it instantly switches 
         before the animation is done. HAVE TO FIX */}
-          <Text style={styles.timerText}>Timer is now done!</Text>
-          <Button
-            title="Open Camera"
-            onPress={navigateToCamera} // Navigate to the camera route
-          />
+          <View style={styles.completedContainer}>
+            <Text style={styles.timerText}>
+              Locked in for{" "}
+              {formatTime(
+                selectedHours * 3600 + selectedMinutes * 60 + selectedSeconds
+              )}
+            </Text>
+            <TouchableOpacity onPress={navigateToCamera}>
+              <FontAwesome name="camera" size={100} color="white" />
+            </TouchableOpacity>
+          </View>
         </>
       ) : (
         <>
@@ -333,5 +355,11 @@ const styles = StyleSheet.create({
     left: 10,
     backgroundColor: "transparent",
     padding: 10,
+  },
+  completedContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
   },
 });

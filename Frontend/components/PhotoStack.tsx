@@ -78,6 +78,7 @@ export default function PhotoStack() {
           )}
           numColumns={3} // Display 3 images per row
           columnWrapperStyle={styles.row}
+          scrollEnabled={false}
         />
       )}
 

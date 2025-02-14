@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
 import { Dimensions } from "react-native";
@@ -26,7 +26,6 @@ export default function CameraComponent() {
   const cameraRef = useRef<CameraView | null>(null);
   const [photo, setPhoto] = useState<any>(null);
   const [lastTap, setLastTap] = useState(0);
-  const router = useRouter();
 
   useEffect(() => {
     if (!mediaPermission?.granted) {
@@ -34,7 +33,7 @@ export default function CameraComponent() {
     }
   }, [mediaPermission]);
 
-  const handleCameraClosePress = () => router.push("/(tabs)");
+  const handleCameraClosePress = () => router.replace("/(tabs)");
 
   const handleCameraCapturePress = () => {
     capturePhoto();

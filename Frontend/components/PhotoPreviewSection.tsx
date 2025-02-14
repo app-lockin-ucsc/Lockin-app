@@ -4,7 +4,7 @@ import { TouchableOpacity, View, StyleSheet, Image, Text } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { CameraCapturedPicture } from "expo-camera";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { Dimensions } from "react-native";
 import {
   savePhotosToStorage,
@@ -25,8 +25,6 @@ const PhotoPreviewSection = ({
   handleRetakePhoto,
   facing,
 }: PreviewSectionProps) => {
-  const router = useRouter();
-
   const handleSubmitPhoto = async () => {
     try {
       //if saving photo so move this to preview screen.
@@ -43,7 +41,7 @@ const PhotoPreviewSection = ({
         //save the photos
         await savePhotosToStorage(exisitingPhotos);
 
-        router.push("/(feed)/feed-screen");
+        router.replace("/(feed)/feed-screen");
       }
     } catch (error) {
       console.error("Error submitting photo:", error);

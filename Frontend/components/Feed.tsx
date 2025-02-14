@@ -15,11 +15,13 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import * as MediaLibrary from "expo-media-library";
 import FlashMessage, { showMessage } from "react-native-flash-message";
 const { width, height } = Dimensions.get("window");
+import { useTimeStore } from "@/utils/timeStorage";
 
 const Feed = () => {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { chosenHours, chosenMinutes, chosenSeconds } = useTimeStore(); // Use the hook to access the time
 
   useEffect(() => {
     loadPhotos();
@@ -95,11 +97,11 @@ const Feed = () => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.photoContainer}>
-              {/* OKAY SO not a huge fan of how the text is formatted and setup right now. 
-                talk to team and ask for a possible new placement. Maybe under neath like a caption typa vibe?*/}
               <View style={styles.textContainer}>
-                {/*For later use. BUT after lockin complete. show how long the user was lockedin for. */}
-                <Text style={styles.textStyle}>Add time lockedin for here</Text>
+                <Text style={styles.textStyle}>
+                  {/* fix this */}
+                  {chosenHours}:{chosenMinutes}:{chosenSeconds}
+                </Text>
                 <Text style={styles.textStyle}>
                   {formatTimestamp(item.timestamp)}
                 </Text>
@@ -146,12 +148,12 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     marginBottom: width * 0.01, // 1% of the height of the screen.
   },
   textStyle: {
     marginTop: 10,
-    fontSize: width * 0.04, // Font size relative to screen width
+    fontSize: width * 0.02, // Font size relative to screen width
     color: "white",
     textAlign: "center",
   },

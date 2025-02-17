@@ -69,10 +69,6 @@ export default function LoginScreen() {
             title="Phone Number Sign In"
             onPress={() => signInWithPhoneNumber(number)}
           />
-          <Button
-            title="Phone Number Sign In"
-            onPress={() => router.replace("/(tabs)")}
-          />
         </SafeAreaView>
       );
     }

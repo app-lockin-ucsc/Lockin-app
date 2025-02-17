@@ -64,24 +64,28 @@ export default function Layout() {
 
   return (
     <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="(tabs)"
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
       <Stack.Screen
         name="(camera)"
-        options={{ headerShown: false }} // No header for the camera screen
+        options={{ headerShown: false, gestureEnabled: false }} // No header for the camera screen
       />
       <Stack.Screen
         name="(feed)"
-        options={{ headerShown: false }} // No header for the feed screen
+        options={{ headerShown: false, gestureEnabled: false }} // No header for the feed screen
       />
       <Stack.Screen
         name="(login)"
         options={{
           headerShown: false,
+          gestureEnabled: false,
         }}
       />
       <Stack.Screen
         name="(settings)"
-        options={{ headerShown: false }} // No header for the settings screen
+        options={{ headerShown: false, gestureEnabled: false }} // No header for the settings screen
       />
     </Stack>
   );

@@ -18,7 +18,7 @@ const { width, height } = Dimensions.get("window");
 export default function PhotoStack() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
@@ -46,13 +46,23 @@ export default function PhotoStack() {
     }
   };
 
-  const handleImagePress = (imageBase64: string) => {
-    setSelectedImage(imageBase64); // Set the selected image
+  const handleImagePress = (image: Photo) => {
+    setSelectedImage(image); // Set the selected image
     setModalVisible(true); // Show the modal
   };
 
   const closeModal = () => {
     setModalVisible(false); // Close the modal
+  };
+
+  // Format date (e.g., "December 8, 2024, 3:30 PM")
+  const formatTimestamp = (timestamp: number) => {
+    if (isNaN(timestamp)) {
+      return "Invalid date";
+    }
+
+    const date = new Date(timestamp);
+    return date.toLocaleString();
   };
 
   return (
@@ -68,12 +78,15 @@ export default function PhotoStack() {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.photoContainer}
-              onPress={() => handleImagePress(item.base64)} // Handle image press to open modal
+              onPress={() => handleImagePress(item)} // Handle image press to open modal
             >
               <Image
                 source={{ uri: "data:image/jpg;base64," + item.base64 }}
                 style={styles.image}
               />
+              <Text style={styles.timeStampText}>
+                {formatTimestamp(item.timestamp)}
+              </Text>
             </TouchableOpacity>
           )}
           numColumns={3} // Display 3 images per row
@@ -96,10 +109,17 @@ export default function PhotoStack() {
             <Entypo name="cross" size={45} color="white" />
           </TouchableOpacity>
           {selectedImage && (
-            <Image
-              source={{ uri: "data:image/jpg;base64," + selectedImage }}
-              style={styles.enlargedImage}
-            />
+            <>
+              <Image
+                source={{
+                  uri: "data:image/jpg;base64," + selectedImage.base64,
+                }}
+                style={styles.enlargedImage}
+              />
+              <Text style={styles.timeStampText}>
+                {formatTimestamp(selectedImage.timestamp)}
+              </Text>
+            </>
           )}
         </View>
       </Modal>
@@ -155,5 +175,11 @@ const styles = StyleSheet.create({
   modalCloseButton: {
     paddingBottom: 5,
     borderRadius: 50,
+  },
+  timeStampText: {
+    marginTop: 10,
+    fontSize: width * 0.02,
+    color: "white",
+    textAlign: "center",
   },
 });

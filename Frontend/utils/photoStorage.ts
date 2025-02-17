@@ -5,6 +5,7 @@ export interface Photo {
   base64: string;
   uri: string;
   timestamp: number;
+  lockinTime ?: number;
 }
 
 // Function to save photos along with their URI and timestamp

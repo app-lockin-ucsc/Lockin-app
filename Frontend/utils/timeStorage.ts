@@ -18,7 +18,7 @@ export const useTimeStore = () => {
   return {
     chosenHours,  // Renamed here
     chosenMinutes,
-    chosenSeconds,
+    chosenSeconds,  
     setTime
   };
 };

@@ -125,7 +125,7 @@ const Feed = () => {
           )}
         />
       ) : (
-        <Text>No photos available</Text>
+        <Text style={styles.textStyle}>No photos available</Text>
       )}
       <FlashMessage position={"top"} />
     </View>
